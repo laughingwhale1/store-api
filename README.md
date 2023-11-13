@@ -9,7 +9,7 @@ cp .env.example .env
 
 To start mysql, from root folder run
 ```
-sudo docker compose up -d
+sudo docker compose up -d OR docker compose up -d
 ```
 
 After you have your docker image build and container run, you need to start laravel api:
