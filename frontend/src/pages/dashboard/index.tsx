@@ -2,7 +2,7 @@ import {Box, Spinner, Text} from "@chakra-ui/react";
 import {postAPI} from "../../services/PostService";
 
 
-const Home = () => {
+const Dashboard = () => {
     // const { users, error, isLoading } = useAppSelector(state => state.userReducer);
     //
     // const dispatch = useAppDispatch();
@@ -29,4 +29,4 @@ const Home = () => {
     )
 }
 
-export default Home;
+export default Dashboard;
