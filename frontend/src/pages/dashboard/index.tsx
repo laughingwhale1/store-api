@@ -1,5 +1,4 @@
-import {Box, Spinner, Text} from "@chakra-ui/react";
-import {postAPI} from "../../services/PostService";
+import {Box, Text} from "@chakra-ui/react";
 
 
 const Dashboard = () => {
@@ -7,23 +6,13 @@ const Dashboard = () => {
     //
     // const dispatch = useAppDispatch();
 
-    const {isLoading, data} = postAPI.useFetchAllPostsQuery(5);
 
-    if (isLoading) {
-        return <Spinner />
-    }
 
     return (
         <>
             <Text>Welcome to Home page!</Text>
             <Box>
-                {data && data.map((item, index) => {
-                    return (
-                        <Box key={index}>
-                            {item.title}
-                        </Box>
-                    )
-                })}
+
             </Box>
         </>
     )

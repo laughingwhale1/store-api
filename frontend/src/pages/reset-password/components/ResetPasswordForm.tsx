@@ -1,44 +1,39 @@
 import {Box, Button, FormControl, FormLabel, Heading, Input, Link, VStack} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 
-type RegisterForm = {
-    userName: string;
-    email: string;
-    password: string
+type ResetPasswordForm = {
+    newPassword: string;
+    repeatNewPassword: string;
 }
 
-export const RegisterForm = () => {
+export const ResetPasswordForm = () => {
     const {
         register,
         handleSubmit,
         // formState: { errors },
-    } = useForm<RegisterForm>()
+    } = useForm<ResetPasswordForm>()
 
-    const onSubmit = (data: RegisterForm) => {
+    const onSubmit = (data: ResetPasswordForm) => {
         console.log(data)
     };
 
     return (
         <Box p={4}  >
             <Heading as="h2" mb={4} fontSize="xl">
-                Register
+                Reset password
             </Heading>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <VStack spacing={4}>
                     <FormControl isRequired>
-                        <FormLabel>Username</FormLabel>
-                        <Input type="text" {...register('userName')} placeholder="Enter your username" />
+                        <FormLabel>New password</FormLabel>
+                        <Input type="email" {...register('newPassword')} placeholder="New password" />
                     </FormControl>
                     <FormControl isRequired>
-                        <FormLabel>Email</FormLabel>
-                        <Input type="email" {...register('email')} placeholder="Enter your email" />
+                        <FormLabel>Repeat new password</FormLabel>
+                        <Input type="password" {...register('repeatNewPassword')} placeholder="Repeat new password" />
                     </FormControl>
-                    <FormControl isRequired>
-                        <FormLabel>Password</FormLabel>
-                        <Input type="password" {...register('password')} placeholder="Enter your password" />
-                    </FormControl>
-                    <Link href={'/password-reset'}>
-                        Forgot password?
+                    <Link href={'/login'}>
+                        Back to Sign in
                     </Link>
                     <Button
                         type="submit"
@@ -46,7 +41,7 @@ export const RegisterForm = () => {
                         size="lg"
                         width="100%"
                     >
-                        Register
+                        Submit
                     </Button>
                 </VStack>
             </form>
