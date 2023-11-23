@@ -51,9 +51,15 @@ class UserService
 
     public function deleteUser(string $userId) {
         try {
-            $user = User::query()->where('id', '=', $userId)->delete();
+            $user = User::query()->find($userId);
 
-            return response()->json(['user' => $user, 'message' => 'User deleted'], 200);
+            if ($user) {
+                $user->delete();
+                return response()->json(['user' => $user, 'message' => 'User deleted'], 200);
+            }
+
+            return response()->json(['user' => $user, 'message' => 'User not found'], 404);
+
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

@@ -7,6 +7,7 @@ import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import {setupStore} from "./store/store.ts";
 import {PersistGate} from "redux-persist/integration/react";
+import {AuthProvider} from "./components/AuthProvider/AuthProvider.tsx";
 
 const store = setupStore();
 
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
            <PersistGate loading={null} persistor={store.persistor}>
                <Suspense fallback={<Spinner />}>
                    <ChakraProvider>
-                       <App />
+                       <AuthProvider>
+                           <App />
+                       </AuthProvider>
                    </ChakraProvider>
                </Suspense>
            </PersistGate>

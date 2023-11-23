@@ -1,31 +1,37 @@
 import {Box, Button, FormControl, FormLabel, Heading, Input, Link, VStack} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
 
-type LoginForm = {
+type RegisterForm = {
     userName: string;
+    email: string;
     password: string
 }
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
     const {
         register,
         handleSubmit,
-    } = useForm<LoginForm>()
+        // formState: { errors },
+    } = useForm<RegisterForm>()
 
-    const onSubmit = (data: LoginForm) => {
+    const onSubmit = (data: RegisterForm) => {
         console.log(data)
     };
 
     return (
         <Box p={4}  >
             <Heading as="h2" mb={4} fontSize="xl">
-                Login
+                Register
             </Heading>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <VStack spacing={4}>
                     <FormControl isRequired>
                         <FormLabel>Username</FormLabel>
                         <Input type="text" {...register('userName')} placeholder="Enter your username" />
+                    </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel>Email</FormLabel>
+                        <Input type="email" {...register('email')} placeholder="Enter your email" />
                     </FormControl>
                     <FormControl isRequired>
                         <FormLabel>Password</FormLabel>
@@ -40,7 +46,7 @@ export const LoginForm = () => {
                         size="lg"
                         width="100%"
                     >
-                        Log in
+                        Register
                     </Button>
                 </VStack>
             </form>

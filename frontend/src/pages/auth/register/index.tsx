@@ -4,7 +4,7 @@ import {Center} from "@chakra-ui/react";
 
 const RegisterPage = () => {
     return (
-        <Center>
+        <Center w={'100%'}>
             <RegisterForm />
         </Center>
     )

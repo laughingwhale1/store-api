@@ -4,7 +4,7 @@ import {RequestPasswordForm} from "./components/RequestPasswordForm.tsx";
 
 const RequestPasswordPage = () => {
     return (
-        <Center>
+        <Center w={'100%'}>
             <RequestPasswordForm />
         </Center>
     )

@@ -27,7 +27,7 @@ export const RequestPasswordForm = () => {
                         <FormLabel>New password</FormLabel>
                         <Input type="email" {...register('email')} placeholder="New password" />
                     </FormControl>
-                    <Link href={'/login'}>
+                    <Link href={'/'}>
                         Back to Sign in
                     </Link>
                     <Button

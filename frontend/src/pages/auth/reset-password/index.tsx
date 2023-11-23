@@ -4,7 +4,7 @@ import {ResetPasswordForm} from "./components/ResetPasswordForm.tsx";
 
 const ResetPasswordPage = () => {
     return (
-        <Center>
+        <Center w={'100%'}>
             <ResetPasswordForm />
         </Center>
     )
