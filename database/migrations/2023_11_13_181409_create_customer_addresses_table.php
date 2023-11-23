@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('country_code', 3);
             $table->timestamps();
             $table->foreignId('customer_id')->references('id')->on('customers');
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->foreign('country_code')->references('code')->on('countries');
         });
     }
