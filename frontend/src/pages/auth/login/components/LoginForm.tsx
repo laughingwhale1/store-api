@@ -1,9 +1,12 @@
-import {Box, Button, FormControl, FormLabel, Heading, Input, Link, VStack} from "@chakra-ui/react";
+import {Box, Button, Checkbox, FormControl, FormLabel, Heading, Input, Link, VStack} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
+import {useAppDispatch} from "@/store/types/hooks.ts";
+import {authStart} from "@/store/reducers/user.reducer.ts";
 
-type LoginForm = {
-    userName: string;
+export interface LoginForm {
+    email: string
     password: string
+    remember: boolean
 }
 
 export const LoginForm = () => {
@@ -12,8 +15,10 @@ export const LoginForm = () => {
         handleSubmit,
     } = useForm<LoginForm>()
 
+    const dispatch = useAppDispatch();
+
     const onSubmit = (data: LoginForm) => {
-        console.log(data)
+        dispatch(authStart(data));
     };
 
     return (
@@ -22,14 +27,17 @@ export const LoginForm = () => {
                 Login
             </Heading>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <VStack spacing={4}>
+                <VStack spacing={4} alignItems={'start'}>
                     <FormControl isRequired>
-                        <FormLabel>Username</FormLabel>
-                        <Input type="text" {...register('userName')} placeholder="Enter your username" />
+                        <FormLabel>Email</FormLabel>
+                        <Input type="text" {...register('email')} placeholder="Enter your email" />
                     </FormControl>
                     <FormControl isRequired>
                         <FormLabel>Password</FormLabel>
                         <Input type="password" {...register('password')} placeholder="Enter your password" />
+                    </FormControl>
+                    <FormControl>
+                        <Checkbox {...register('remember')} defaultChecked>Remember me</Checkbox>
                     </FormControl>
                     <Link href={'/password-request'}>
                         Forgot password?

@@ -1,19 +1,21 @@
 import {Box, Flex} from "@chakra-ui/react";
-import {Outlet} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import {Sidebar} from "./components/Sidebar.tsx";
 import {Header} from "./components/Header.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useAppSelector} from "@/store/types/hooks.ts";
 
 export const AdminLayout = () => {
 
-    // const { token } = useAppSelector(state => state.userReducer.user)
-    // const navigate = useNavigate();
-    // useEffect(() => {
-    //     if (!token) {
-    //         navigate('/', {replace: true})
-    //             return;
-    //     }
-    // }, [token]);
+    const { token } = useAppSelector(state => state.userReducer)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/', {replace: true})
+                return;
+        }
+    }, [token]);
 
     const [isExpanded, setIsExpanded] = useState(true);
 

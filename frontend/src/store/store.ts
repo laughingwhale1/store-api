@@ -1,14 +1,9 @@
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import userReducer from './reducers/UserSlice.ts';
+import {configureStore} from "@reduxjs/toolkit";
 import createSagaMiddleware from 'redux-saga'
 import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE} from "redux-persist";
 import rootSaga from "./sagas/root.saga.ts";
 import storage from "redux-persist/lib/storage";
-
-
-const rootReducer = combineReducers({
-    userReducer,
-})
+import {rootReducer} from "@/store/reducers/root.reducer.ts";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -51,8 +46,9 @@ export const setupStore = () => {
     }
 }
 
-const store = setupStore().store
+export const {store, persistor} = setupStore();
 
 export type RootState = ReturnType<typeof rootReducer>;
+// @ts-ignore
 export type AppStore = ReturnType<typeof store>;
 export type AppDispatch = AppStore['dispatch'];

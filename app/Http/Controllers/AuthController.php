@@ -9,9 +9,11 @@ class AuthController extends Controller
 {
     public function login(AuthLoginRequest $authLoginRequest) {
         $remember = $authLoginRequest['remember'] ?? false;
-        unset($authLoginRequest['remember']);
 
-        if(!Auth::attempt($authLoginRequest->validated(), $remember)) {
+        $loginFormData = $authLoginRequest->validated();
+        unset($loginFormData['remember']);
+
+        if(!Auth::attempt($loginFormData, $remember)) {
             return response([
                 'message' => 'Email or password is incorrect'
             ], 422);
@@ -31,9 +33,12 @@ class AuthController extends Controller
         $token = $user->createToken('main')->plainTextToken;
 
         return response([
-            'user' => $user,
-            'token' => $token
-        ]);
+            'value' => [
+                'user' => $user,
+                'token' => $token
+            ],
+            'success' => true
+        ], 200);
     }
 
 

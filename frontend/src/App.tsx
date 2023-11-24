@@ -14,7 +14,6 @@ const RequestPasswordPage = lazy(() => import('./pages/auth/request-password'))
 const NotFoundPage = lazy(() => import('./pages/not-found'))
 
 function App() {
-
   return (
     <Routes>
         <Route path={'/'} element={<GuestLayout />}>
@@ -24,7 +23,7 @@ function App() {
             <Route path={'/password-request'} element={<RequestPasswordPage />} />
 
             <Route path={'/app'} element={<AdminLayout />}>
-                <Route path={'dashboard'} element={<DashboardPage />} />
+                <Route index element={<DashboardPage />} />
                 <Route path={'products'} element={<ProductsPage />} />
                 <Route path={'users'} element={<UsersPage />} />
                 <Route path={'reports'} element={<ReportsPage />} />
