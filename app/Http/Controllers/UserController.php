@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController
 {
-    public function __construct(protected UserService $userService)
+    public function __construct(private UserService $userService)
     {
     }
     public function getUsers () {

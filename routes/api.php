@@ -14,6 +14,7 @@ Route::prefix('users')->group(function () {
     Route::delete('{id}', [UserController::class, 'deleteUser']);
 });
 
+
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });

@@ -19,7 +19,7 @@ class UserService
             $users = User::query()->where('id', '=', $id)->get();
             return response()->json(['result' => $users]);
         } catch (Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
