@@ -1,6 +1,6 @@
 import {Box, Button, Checkbox, FormControl, FormLabel, Heading, Input, Link, VStack} from "@chakra-ui/react";
 import {useForm} from "react-hook-form";
-import {useAppDispatch} from "@/store/types/hooks.ts";
+import {useAppDispatch, useAppSelector} from "@/store/types/hooks.ts";
 import {authStart} from "@/store/reducers/user.reducer.ts";
 
 export interface LoginForm {
@@ -16,6 +16,7 @@ export const LoginForm = () => {
     } = useForm<LoginForm>()
 
     const dispatch = useAppDispatch();
+    const loading = useAppSelector(state => state.userReducer.loading)
 
     const onSubmit = (data: LoginForm) => {
         dispatch(authStart(data));
@@ -49,6 +50,7 @@ export const LoginForm = () => {
                         type="submit"
                         colorScheme="teal"
                         size="lg"
+                        isLoading={loading}
                         width="100%"
                     >
                         Log in

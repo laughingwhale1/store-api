@@ -3,14 +3,17 @@ import {Outlet, useNavigate} from "react-router-dom";
 import {Sidebar} from "./components/Sidebar.tsx";
 import {Header} from "./components/Header.tsx";
 import {useEffect, useState} from "react";
-import {useAppSelector} from "@/store/types/hooks.ts";
+import {useAppDispatch, useAppSelector} from "@/store/types/hooks.ts";
+import {getCurrentUserStart} from "@/store/reducers/user.reducer.ts";
 
 export const AdminLayout = () => {
 
     const { token } = useAppSelector(state => state.userReducer)
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
+        dispatch(getCurrentUserStart());
         if (!token) {
             navigate('/', {replace: true})
                 return;

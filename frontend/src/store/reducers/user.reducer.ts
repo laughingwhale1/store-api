@@ -63,13 +63,42 @@ export const userSlice = createSlice({
             state.loading = false;
             state.errors = action.payload;
         },
+        logoutStart(state ) {
+            state.loading = true;
+        },
+        logoutSuccess(state) {
+            state.loading = false;
+            state.user = {
+                id: null,
+                name: '',
+                email: '',
+                email_verified_at: '',
+                created_at: '',
+                updated_at: '',
+                is_admin: null
+            };
+            state.token = '';
+        },
+        getCurrentUserStart(state) {
+            state.loading = false;
+        },
+        getCurrentUserSuccess(state, action: PayloadAction<{id: number, name: string, email: string}>) {
+            state.loading = false;
+            state.user.id = action.payload.id;
+            state.user.name = action.payload.name;
+            state.user.email = action.payload.email;
+        }
     }
 })
 
 export const {
     authStart,
     authSuccess,
-    authError
+    authError,
+    logoutSuccess,
+    logoutStart,
+    getCurrentUserStart,
+    getCurrentUserSuccess
 } = userSlice.actions;
 
 export default userSlice.reducer

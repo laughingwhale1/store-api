@@ -4,7 +4,7 @@ import {useAppSelector} from "@/store/types/hooks.ts";
 import {useEffect} from "react";
 
 export const GuestLayout = () => {
-    const { token } = useAppSelector(state => state.userReducer)
+    const token = useAppSelector(state => state.userReducer.token)
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -13,6 +13,7 @@ export const GuestLayout = () => {
             return;
         }
     }, [token]);
+
     return (
         <Flex minH={'100vh'} minW={'100vw'}>
             <Outlet />

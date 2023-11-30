@@ -5,16 +5,15 @@ import './index.css'
 import {ChakraProvider, Spinner} from "@chakra-ui/react";
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
-import {setupStore} from "./store/store.ts";
+import {persistor, store} from "./store/store.ts";
 import {PersistGate} from "redux-persist/integration/react";
 import {AuthProvider} from "./components/AuthProvider/AuthProvider.tsx";
 
-const store = setupStore();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
-        <Provider store={store.store}>
-            <PersistGate loading={null} persistor={store.persistor}>
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
                 <Suspense fallback={<Spinner/>}>
                     <ChakraProvider>
                         <AuthProvider>

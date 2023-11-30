@@ -1,7 +1,7 @@
 import {configureStore} from "@reduxjs/toolkit";
 import createSagaMiddleware from 'redux-saga'
 import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE} from "redux-persist";
-import rootSaga from "./sagas/root.saga.ts";
+import rootSaga from "./sagas/root.saga";
 import storage from "redux-persist/lib/storage";
 import {rootReducer} from "@/store/reducers/root.reducer.ts";
 

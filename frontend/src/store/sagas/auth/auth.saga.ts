@@ -1,7 +1,14 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import {call, put, takeEvery, takeLatest} from 'redux-saga/effects';
 
 import {ApiResponse, SagaError} from "@/types/api.types.ts";
-import {authError, authStart, authSuccess, UserPayload} from "@/store/reducers/user.reducer.ts";
+import {
+    authError,
+    authStart,
+    authSuccess,
+    UserPayload,
+    logoutSuccess,
+    logoutStart, getCurrentUserStart, getCurrentUserSuccess
+} from "@/store/reducers/user.reducer.ts";
 import {Alerter} from "@/utils/Alerter.tsx";
 import {LoginForm} from "@/pages/auth/login/components/LoginForm.tsx";
 import ApiBase from "@/api/api.base.ts";
@@ -29,6 +36,36 @@ function* userAuthWorker(payload: PayloadAction<LoginForm>) {
     }
 }
 
+function* userLogoutWorker() {
+    try {
+        yield call(
+            ApiBase.post,
+            'api/auth/logout',
+            {}
+        );
+        yield put(logoutSuccess());
+        sessionStorage.removeItem('TOKEN');
+        window.location.href = '/'
+    } catch (e) {
+        Alerter.error(e as SagaError);
+    }
+}
+
+function* currentUserWorker() {
+    try {
+        const result = yield call(
+            ApiBase.get,
+            'api/user',
+            {}
+        );
+        yield put(getCurrentUserSuccess(result))
+    } catch (e) {
+        Alerter.error(e as SagaError);
+    }
+}
+
 export default function* watchUserAuth() {
-    yield takeEvery(authStart.type, userAuthWorker);
+    yield takeLatest(authStart.type, userAuthWorker);
+    yield takeLatest(logoutStart.type, userLogoutWorker);
+    yield takeLatest(getCurrentUserStart.type, currentUserWorker);
 }
