@@ -64,5 +64,4 @@ class UserService
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
 }
