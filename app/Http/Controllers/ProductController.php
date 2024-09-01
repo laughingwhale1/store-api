@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
 use App\Http\Requests\Product\ProductRequest;
-use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
@@ -14,9 +13,25 @@ class ProductController extends Controller
 
     public function index()
     {
-        return ProductListResource::collection(
-            Product::query()->paginate(10)
-        );
+        $search = request('search', '');
+        $perPage = request('per_page', 10);
+        $orderBy = request('order_by', 'desc');
+
+        $productsList = $productsList = Product::query()
+            ->where('title', 'like', "%{$search}%")
+            ->orWhere('description', 'like', "%{$search}%")
+            ->orderBy('updated_at', $orderBy)
+            ->paginate($perPage);
+
+        $data = ProductListResource::collection($productsList->items());
+
+        if (count($data) > 0) {
+            $result = new ApiResponse(['data' => $data, 'totalCount' => $productsList->total()], true, 200, []);
+             return response()->json($result->buildResponse(), 200);
+        } else {
+            $result = new ApiResponse(null, true, 404, []);
+             return response()->json($result->buildResponse(), 404);
+        }
     }
 
     public function store(ProductRequest $request)
