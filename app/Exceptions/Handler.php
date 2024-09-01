@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\ApiResponse;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Throwable;
@@ -31,5 +33,13 @@ class Handler extends ExceptionHandler
 //        $this->renderable(function (ValidationException $exception) {
 //           return response(['']);
 //        });
+    }
+
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            $res = new ApiResponse(null, false, 401, [$exception->getMessage()]);
+            return response()->json($res->buildResponse(), 401);
+        }
     }
 }
