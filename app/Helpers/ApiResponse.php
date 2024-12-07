@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+// TODO: rework to helper alias class
+
 class ApiResponse
 {
     private int $_status = 200;

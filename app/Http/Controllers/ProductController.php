@@ -8,12 +8,13 @@ use App\Http\Requests\Product\ProductRequest;
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
 
-    public function index()
+    public function index(): JsonResponse
     {
         $search = request('search', '');
         $perPage = request('per_page', 10);
@@ -42,26 +43,26 @@ class ProductController extends Controller
         }
     }
 
-    public function store(ProductRequest $request)
+    public function store(ProductRequest $request): ProductResource
     {
         return new ProductResource(
             Product::create($request->validated())
         );
     }
 
-    public function show(Product $product)
+    public function show(Product $product): ProductResource
     {
         return new ProductResource($product);
     }
 
-    public function update(ProductRequest $request, Product $product)
+    public function update(ProductRequest $request, Product $product): ProductResource
     {
         $product->update($request->validated());
 
         return new ProductResource($product);
     }
 
-    public function destroy(Product $product)
+    public function destroy(Product $product): \Illuminate\Http\JsonResponse
     {
         $product->delete();
 
