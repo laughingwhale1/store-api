@@ -39,7 +39,8 @@ class ResponseHelper
         return response()->json([
             'value' => $value,
             'success' => $success,
-            'errors' => self::appendErrors($errors)
+            'errors' => self::appendErrors($errors),
+            'status' => $status
         ], $status);
     }
 }

@@ -23,7 +23,6 @@ class AuthController extends Controller
             return response()->json($res->buildResponse(), 422);
         }
 
-        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         if (!$user->is_admin) {
