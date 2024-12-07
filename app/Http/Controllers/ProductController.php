@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
+use App\Helpers\ResponseHelper;
 use App\Http\Requests\Product\ProductRequest;
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
@@ -17,7 +19,7 @@ class ProductController extends Controller
         $perPage = request('per_page', 10);
         $orderBy = request('order_by', 'desc');
 
-        $productsList = $productsList = Product::query()
+        $productsList = Product::query()
             ->where('title', 'like', "%{$search}%")
             ->orWhere('description', 'like', "%{$search}%")
             ->orderBy('updated_at', $orderBy)
@@ -26,11 +28,17 @@ class ProductController extends Controller
         $data = ProductListResource::collection($productsList->items());
 
         if (count($data) > 0) {
-            $result = new ApiResponse(['data' => $data, 'totalCount' => $productsList->total()], true, 200, []);
-             return response()->json($result->buildResponse(), 200);
+            return ResponseHelper::buildResponse(
+                ['data' => $data, 'totalCount' => $productsList->total()],
+                true,
+                Response::HTTP_OK,
+                []);
         } else {
-            $result = new ApiResponse(null, true, 404, []);
-             return response()->json($result->buildResponse(), 404);
+            return ResponseHelper::buildResponse(
+                ['data' => [], 'totalCount' => $productsList->total()],
+                true,
+                Response::HTTP_OK,
+                []);
         }
     }
 

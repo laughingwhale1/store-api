@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -18,7 +19,7 @@ class AuthController extends Controller
         unset($loginFormData['remember']);
 
         if (!Auth::attempt($loginFormData, $remember)) {
-            $res = new ApiResponse(null, false, 422, ['Email or password is incorrect']);
+            $res = new ApiResponse(null, false, Response::HTTP_BAD_REQUEST, ['Email or password is incorrect']);
             return response()->json($res->buildResponse(), 422);
         }
 
@@ -38,7 +39,7 @@ class AuthController extends Controller
         $res = new ApiResponse([
             'user' => new UserResource($user),
             'token' => $token
-        ], true, 200, ['You dont have permission to authenticate as admin']);
+        ], true, Response::HTTP_FORBIDDEN, ['You dont have permission to authenticate as admin']);
         return response()->json($res->buildResponse(), 200);
 
     }
