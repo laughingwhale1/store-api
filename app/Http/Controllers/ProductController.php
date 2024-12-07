@@ -98,11 +98,11 @@ class ProductController extends Controller
             $data['image_size'] = $image->getSize();
 
             if ($product->image){
-                $dir = dirname($product->image);
+                $dir = dirname($image);
                 $parsedUrl = parse_url($dir);
                 $path = $parsedUrl['path'];
                 $path = ltrim($path, '/');
-                $path = str_replace('storage/', '', $path);
+                $path = str_replace('images/', '', $path);
                 Storage::deleteDirectory('/public/' . $path);
             }
         }
@@ -117,7 +117,7 @@ class ProductController extends Controller
         );
     }
 
-    public function destroy(Product $product): \Illuminate\Http\JsonResponse
+    public function destroy(Product $product)
     {
         $product->delete();
 
@@ -141,4 +141,5 @@ class ProductController extends Controller
 
         return $path . '/' . $image->getClientOriginalName();
     }
+
 }
