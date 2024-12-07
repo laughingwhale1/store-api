@@ -47,7 +47,7 @@ class ProductController extends Controller
         }
     }
 
-    public function store(ProductRequest $request)
+    public function store(ProductRequest $request, Product $product)
     {
         $data = $request->validated();
         $data['created_by'] = $request->user()->id;
@@ -61,6 +61,11 @@ class ProductController extends Controller
             $data['image'] = URL::to(Storage::url($relativePath));
             $data['image_mime'] = $image->getClientMimeType();
             $data['image_size'] = $image->getSize();
+
+            // If there is an old image, delete it
+            if ($product->image) {
+                Storage::deleteDirectory('/public/' . dirname($product->image));
+            }
         }
 
         $product = Product::create($data);
@@ -78,19 +83,50 @@ class ProductController extends Controller
         return new ProductResource($product);
     }
 
-    public function update(ProductRequest $request, Product $product): ProductResource
+    public function update(ProductRequest $request, Product $product): JsonResponse
     {
-        $product->update($request->validated());
+        $data = $request->validated();
+        $data['updated_by'] = $request->user()->id;
 
-        return new ProductResource($product);
+        /** @var UploadedFile $image */
+        $image = $data['image'] ?? null;
+
+        if ($image){
+            $relativePath = $this->saveImage($image);
+            $data['image'] = URL::to(Storage::url($relativePath));
+            $data['image_mime'] = $image->getClientMimeType();
+            $data['image_size'] = $image->getSize();
+
+            if ($product->image){
+                $dir = dirname($product->image);
+                $parsedUrl = parse_url($dir);
+                $path = $parsedUrl['path'];
+                $path = ltrim($path, '/');
+                $path = str_replace('storage/', '', $path);
+                Storage::deleteDirectory('/public/' . $path);
+            }
+        }
+
+        $product->update($data);
+
+        return ResponseHelper::buildResponse(
+            new ProductResource($product),
+            true,
+            Response::HTTP_OK,
+            []
+        );
     }
 
     public function destroy(Product $product): \Illuminate\Http\JsonResponse
     {
         $product->delete();
 
-        $res = new ApiResponse(null, true, 204, []);
-        return response()->json($res->buildResponse(), 204);
+        return ResponseHelper::buildResponse(
+            null,
+            true,
+            Response::HTTP_NO_CONTENT,
+            []
+        );
     }
 
     private function saveImage(UploadedFile $image): string
